@@ -1,0 +1,570 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PDFusion - Lightning Fast PDF Tools</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            background: linear-gradient(135deg, #e9d5ff 0%, #fce7f3 50%, #fed7aa 100%);
+            min-height: 100vh;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        header {
+            background: rgba(255, 255, 255, 0.9);
+            backdrop-filter: blur(10px);
+            padding: 20px;
+            border-radius: 20px;
+            margin-bottom: 40px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+        }
+        
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        
+        .logo-icon {
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(135deg, #9333ea, #ec4899);
+            border-radius: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 30px;
+            box-shadow: 0 5px 15px rgba(147, 51, 234, 0.3);
+        }
+        
+        h1 {
+            font-size: 32px;
+            background: linear-gradient(135deg, #9333ea, #ec4899, #f97316);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        .tagline {
+            font-size: 12px;
+            color: #666;
+        }
+        
+        .hero {
+            text-align: center;
+            margin: 60px 0;
+        }
+        
+        .hero h2 {
+            font-size: 48px;
+            margin-bottom: 20px;
+            color: #1f2937;
+        }
+        
+        .hero .highlight {
+            background: linear-gradient(135deg, #9333ea, #ec4899, #f97316);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        .tools-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 30px;
+            margin: 40px 0;
+        }
+        
+        .tool-card {
+            background: white;
+            padding: 30px;
+            border-radius: 20px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+        
+        .tool-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 40px rgba(147, 51, 234, 0.2);
+        }
+        
+        .tool-icon {
+            width: 80px;
+            height: 80px;
+            margin: 0 auto 20px;
+            border-radius: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 40px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+        
+        .tool-card h3 {
+            font-size: 20px;
+            margin-bottom: 10px;
+            color: #1f2937;
+        }
+        
+        .tool-card p {
+            color: #6b7280;
+            font-size: 14px;
+        }
+        
+        .upload-area {
+            background: linear-gradient(135deg, #faf5ff, #fce7f3);
+            border: 4px dashed #d8b4fe;
+            border-radius: 30px;
+            padding: 60px 20px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-bottom: 30px;
+        }
+        
+        .upload-area:hover {
+            border-color: #ec4899;
+            background: linear-gradient(135deg, #fae8ff, #fce7f3);
+        }
+        
+        .upload-icon {
+            width: 80px;
+            height: 80px;
+            background: linear-gradient(135deg, #a855f7, #ec4899);
+            margin: 0 auto 20px;
+            border-radius: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 40px;
+            color: white;
+        }
+        
+        .btn {
+            padding: 15px 40px;
+            border: none;
+            border-radius: 15px;
+            font-size: 18px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .btn-primary {
+            background: linear-gradient(135deg, #9333ea, #ec4899);
+            color: white;
+            box-shadow: 0 5px 15px rgba(147, 51, 234, 0.3);
+        }
+        
+        .btn-primary:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 25px rgba(147, 51, 234, 0.4);
+        }
+        
+        .btn-success {
+            background: linear-gradient(135deg, #10b981, #059669);
+            color: white;
+        }
+        
+        .file-list {
+            margin: 20px 0;
+        }
+        
+        .file-item {
+            background: white;
+            padding: 20px;
+            border-radius: 15px;
+            margin-bottom: 10px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+        }
+        
+        .file-info {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        
+        .file-icon {
+            width: 50px;
+            height: 50px;
+            background: linear-gradient(135deg, #a855f7, #ec4899);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 20px;
+        }
+        
+        .btn-remove {
+            padding: 8px 20px;
+            background: #fee2e2;
+            color: #dc2626;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+        }
+        
+        .btn-remove:hover {
+            background: #fecaca;
+        }
+        
+        .alert {
+            padding: 20px;
+            border-radius: 15px;
+            margin: 20px 0;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        
+        .alert-error {
+            background: #fee2e2;
+            border: 2px solid #fca5a5;
+            color: #991b1b;
+        }
+        
+        .alert-success {
+            background: #d1fae5;
+            border: 2px solid #86efac;
+            color: #065f46;
+        }
+        
+        .hidden {
+            display: none;
+        }
+        
+        .back-btn {
+            color: #9333ea;
+            text-decoration: none;
+            font-weight: 600;
+            display: inline-block;
+            margin-bottom: 30px;
+            font-size: 18px;
+        }
+        
+        .back-btn:hover {
+            color: #ec4899;
+        }
+        
+        .tool-page {
+            background: rgba(255, 255, 255, 0.9);
+            padding: 40px;
+            border-radius: 30px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+        }
+        
+        .tool-header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+        
+        .tool-header-icon {
+            width: 100px;
+            height: 100px;
+            margin: 0 auto 20px;
+            border-radius: 25px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 50px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+        }
+        
+        .password-input {
+            width: 100%;
+            padding: 15px;
+            border: 2px solid #fde68a;
+            border-radius: 15px;
+            font-size: 16px;
+            margin: 20px 0;
+        }
+        
+        .loader {
+            border: 4px solid #f3f4f6;
+            border-top: 4px solid #9333ea;
+            border-radius: 50%;
+            width: 30px;
+            height: 30px;
+            animation: spin 1s linear infinite;
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <div class="logo">
+                <div class="logo-icon">⚡</div>
+                <div>
+                    <h1>PDFusion</h1>
+                    <p class="tagline">Lightning Fast PDF Tools</p>
+                </div>
+            </div>
+        </header>
+
+        <div id="home-page">
+            <div class="hero">
+                <h2>Your PDF Powerhouse<br><span class="highlight">All in One Place</span></h2>
+                <p style="font-size: 20px; color: #6b7280; margin-top: 20px;">Free, fast, and incredibly easy. Transform your PDFs with professional-grade tools ⚡</p>
+            </div>
+
+            <div class="tools-grid">
+                <div class="tool-card" onclick="showTool('merge')">
+                    <div class="tool-icon" style="background: linear-gradient(135deg, #ec4899, #be185d);">🔗</div>
+                    <h3>Merge PDF</h3>
+                    <p>Combine multiple PDFs</p>
+                </div>
+                <div class="tool-card" onclick="showTool('split')">
+                    <div class="tool-icon" style="background: linear-gradient(135deg, #3b82f6, #0ea5e9);">✂️</div>
+                    <h3>Split PDF</h3>
+                    <p>Extract pages from PDF</p>
+                </div>
+                <div class="tool-card" onclick="showTool('compress')">
+                    <div class="tool-icon" style="background: linear-gradient(135deg, #10b981, #059669);">📦</div>
+                    <h3>Compress PDF</h3>
+                    <p>Reduce PDF file size</p>
+                </div>
+                <div class="tool-card" onclick="showTool('jpg-to-pdf')">
+                    <div class="tool-icon" style="background: linear-gradient(135deg, #a855f7, #7c3aed);">🖼️</div>
+                    <h3>JPG to PDF</h3>
+                    <p>Convert images to PDF</p>
+                </div>
+                <div class="tool-card" onclick="showTool('rotate')">
+                    <div class="tool-icon" style="background: linear-gradient(135deg, #d946ef, #c026d3);">🔄</div>
+                    <h3>Rotate PDF</h3>
+                    <p>Rotate PDF pages</p>
+                </div>
+                <div class="tool-card" onclick="showTool('protect')">
+                    <div class="tool-icon" style="background: linear-gradient(135deg, #6366f1, #4f46e5);">🔒</div>
+                    <h3>Protect PDF</h3>
+                    <p>Add password to PDF</p>
+                </div>
+                <div class="tool-card" onclick="showTool('unlock')">
+                    <div class="tool-icon" style="background: linear-gradient(135deg, #f59e0b, #d97706);">🔓</div>
+                    <h3>Unlock PDF</h3>
+                    <p>Remove PDF password</p>
+                </div>
+            </div>
+        </div>
+
+        <div id="tool-page" class="hidden">
+            <a href="#" class="back-btn" onclick="showHome(); return false;">← Back to all tools</a>
+            <div class="tool-page">
+                <div class="tool-header">
+                    <div id="tool-header-icon" class="tool-header-icon"></div>
+                    <h2 id="tool-title" style="font-size: 40px; margin-bottom: 10px;"></h2>
+                    <p id="tool-description" style="font-size: 18px; color: #6b7280;"></p>
+                </div>
+
+                <div class="upload-area" onclick="document.getElementById('fileInput').click()">
+                    <div class="upload-icon">📤</div>
+                    <h3 style="font-size: 24px; margin-bottom: 10px;">Drop files here or click to browse</h3>
+                    <p id="upload-text" style="color: #6b7280; font-size: 16px;">Select PDF files</p>
+                    <input type="file" id="fileInput" style="display: none;" onchange="handleFiles(this.files)">
+                </div>
+
+                <div id="password-section" class="hidden">
+                    <input type="password" id="passwordInput" class="password-input" placeholder="Enter password">
+                </div>
+
+                <div id="file-list" class="file-list hidden"></div>
+
+                <div id="error-alert" class="alert alert-error hidden"></div>
+                <div id="success-alert" class="alert alert-success hidden"></div>
+
+                <button id="process-btn" class="btn btn-primary hidden" onclick="processFiles()">
+                    <span>⚡</span> Process with PDFusion
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let currentTool = '';
+        let selectedFiles = [];
+
+        const tools = {
+            'merge': { name: 'Merge PDF', desc: 'Combine multiple PDFs', icon: '🔗', gradient: 'linear-gradient(135deg, #ec4899, #be185d)', multiple: true },
+            'split': { name: 'Split PDF', desc: 'Extract pages from PDF', icon: '✂️', gradient: 'linear-gradient(135deg, #3b82f6, #0ea5e9)', multiple: false },
+            'compress': { name: 'Compress PDF', desc: 'Reduce PDF file size', icon: '📦', gradient: 'linear-gradient(135deg, #10b981, #059669)', multiple: false },
+            'jpg-to-pdf': { name: 'JPG to PDF', desc: 'Convert images to PDF', icon: '🖼️', gradient: 'linear-gradient(135deg, #a855f7, #7c3aed)', multiple: true, accept: 'image/*' },
+            'rotate': { name: 'Rotate PDF', desc: 'Rotate PDF pages', icon: '🔄', gradient: 'linear-gradient(135deg, #d946ef, #c026d3)', multiple: false },
+            'protect': { name: 'Protect PDF', desc: 'Add password to PDF', icon: '🔒', gradient: 'linear-gradient(135deg, #6366f1, #4f46e5)', multiple: false, password: true },
+            'unlock': { name: 'Unlock PDF', desc: 'Remove PDF password', icon: '🔓', gradient: 'linear-gradient(135deg, #f59e0b, #d97706)', multiple: false, password: true }
+        };
+
+        function showTool(toolId) {
+            currentTool = toolId;
+            selectedFiles = [];
+            const tool = tools[toolId];
+
+            document.getElementById('home-page').classList.add('hidden');
+            document.getElementById('tool-page').classList.remove('hidden');
+
+            document.getElementById('tool-header-icon').style.background = tool.gradient;
+            document.getElementById('tool-header-icon').textContent = tool.icon;
+            document.getElementById('tool-title').textContent = tool.name;
+            document.getElementById('tool-description').textContent = tool.desc;
+
+            const fileInput = document.getElementById('fileInput');
+            fileInput.multiple = tool.multiple;
+            fileInput.accept = tool.accept || '.pdf';
+
+            document.getElementById('upload-text').textContent = tool.accept ? 'Select images' : 'Select PDF files';
+            document.getElementById('password-section').classList.toggle('hidden', !tool.password);
+            document.getElementById('file-list').classList.add('hidden');
+            document.getElementById('error-alert').classList.add('hidden');
+            document.getElementById('success-alert').classList.add('hidden');
+            document.getElementById('process-btn').classList.add('hidden');
+        }
+
+        function showHome() {
+            document.getElementById('home-page').classList.remove('hidden');
+            document.getElementById('tool-page').classList.add('hidden');
+            selectedFiles = [];
+        }
+
+        function handleFiles(files) {
+            selectedFiles = Array.from(files);
+            displayFiles();
+        }
+
+        function displayFiles() {
+            const fileList = document.getElementById('file-list');
+            fileList.innerHTML = '';
+            
+            if (selectedFiles.length > 0) {
+                fileList.classList.remove('hidden');
+                selectedFiles.forEach((file, index) => {
+                    const fileItem = document.createElement('div');
+                    fileItem.className = 'file-item';
+                    fileItem.innerHTML = `
+                        <div class="file-info">
+                            <div class="file-icon">📄</div>
+                            <div>
+                                <div style="font-weight: 600;">${file.name}</div>
+                                <div style="font-size: 14px; color: #6b7280;">${(file.size / 1024).toFixed(2)} KB</div>
+                            </div>
+                        </div>
+                        <button class="btn-remove" onclick="removeFile(${index})">Remove</button>
+                    `;
+                    fileList.appendChild(fileItem);
+                });
+                document.getElementById('process-btn').classList.remove('hidden');
+            } else {
+                fileList.classList.add('hidden');
+                document.getElementById('process-btn').classList.add('hidden');
+            }
+        }
+
+        function removeFile(index) {
+            selectedFiles.splice(index, 1);
+            displayFiles();
+        }
+
+        async function processFiles() {
+            const tool = tools[currentTool];
+            
+            if (selectedFiles.length === 0) {
+                showError('Please select at least one file');
+                return;
+            }
+
+            if (tool.password && !document.getElementById('passwordInput').value) {
+                showError('Please enter a password');
+                return;
+            }
+
+            hideAlerts();
+            const processBtn = document.getElementById('process-btn');
+            processBtn.innerHTML = '<div class="loader"></div> Processing...';
+            processBtn.disabled = true;
+
+            try {
+                const formData = new FormData();
+                selectedFiles.forEach(file => formData.append('files', file));
+                
+                if (tool.password) {
+                    formData.append('password', document.getElementById('passwordInput').value);
+                }
+
+                const response = await fetch(`/api/${currentTool}`, {
+                    method: 'POST',
+                    body: formData
+                });
+
+                if (!response.ok) {
+                    throw new Error('Processing failed');
+                }
+
+                const blob = await response.blob();
+                const url = URL.createObjectURL(blob);
+                const filename = response.headers.get('Content-Disposition')?.split('filename=')[1]?.replace(/"/g, '') || `processed_${Date.now()}.pdf`;
+
+                showSuccess(`Successfully processed ${selectedFiles.length} file(s)!`, url, filename);
+            } catch (error) {
+                showError(error.message || 'An error occurred during processing');
+            } finally {
+                processBtn.innerHTML = '<span>⚡</span> Process with PDFusion';
+                processBtn.disabled = false;
+            }
+        }
+
+        function showError(message) {
+            const alert = document.getElementById('error-alert');
+            alert.textContent = '⚠️ ' + message;
+            alert.classList.remove('hidden');
+        }
+
+        function showSuccess(message, url, filename) {
+            const alert = document.getElementById('success-alert');
+            alert.innerHTML = `
+                ✅ ${message}
+                <button class="btn btn-success" onclick="downloadFile('${url}', '${filename}')" style="margin-left: auto;">
+                    📥 Download ${filename}
+                </button>
+            `;
+            alert.classList.remove('hidden');
+        }
+
+        function downloadFile(url, filename) {
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = filename;
+            a.click();
+        }
+
+        function hideAlerts() {
+            document.getElementById('error-alert').classList.add('hidden');
+            document.getElementById('success-alert').classList.add('hidden');
+        }
+    </script>
+</body>
+</html>
